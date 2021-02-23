@@ -3,12 +3,17 @@
 ******************/
 // Librerias Instaladas
 const express = require('express')
-const logger = require('./config/logger')
+const requestId = require('express-request-id')();
 const morgan = require('morgan')
 
+const logger = require('./config/logger')
+
+// Iniciamos app
 const app = express()
 
 // Setup middleware
+app.use(requestId)
+app.use(logger.requests);
 app.use(morgan
     ('combined',
         {
