@@ -4,12 +4,11 @@
 const winston = require('winston')
 const morgan = require('morgan');
 const { createLogger , format , transports } = require('winston')
+
 // const { combine, timestamp , splat , printf , errors, json } = format;
 const stripFinalNewline = require('strip-final-newline');
 
-
 // Setup Logger
-
 const logger = createLogger({
     format:
         winston.format.combine(
@@ -53,4 +52,9 @@ const requests = morgan(requestFormat, {
 // Attach to logger object
 logger.requests = requests
 
+// Format as request logger and attach to logger object
+logger.header = (req) => {
+    const date = new Date().toISOString()
+    return `${req.ip} [${date}] ${req.id} "${req.method} ${req.originalUrl}"`
+}
 module.exports = logger
