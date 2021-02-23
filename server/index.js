@@ -7,6 +7,7 @@ const requestId = require('express-request-id')();
 const morgan = require('morgan')
 
 const logger = require('./config/logger')
+const api =  require('./api')
 
 // Iniciamos app
 const app = express()
@@ -22,14 +23,21 @@ app.use(morgan
     )
 )
 
-// ROUTE GET - INDEX
-app.get('/', ( req, res ,next)=>{
-   res.status(200).json({
-       msg:'Solicitud GET / '
-   })
-})
+// Setup router and routes
+app.use('/api' , api)
 
-// No route found handler
+
+
+// ROUTE GET - INDEX
+//app.get('/', ( req, res ,next)=>{
+//   res.status(200).json({
+//       msg:'Solicitud GET / '
+//   })
+//})
+
+
+
+// No route found handler - No se ha encontrado ninguna ruta
 app.use((req,res,next) => {
     next({
         message: 'La ruta solicitada no existe',
@@ -39,7 +47,7 @@ app.use((req,res,next) => {
 })
 
 
-// Error handler - No existe o 404
+// Error handler - Gestor de Errores
 app.use((err, req, res, next) => {
     const { message, statusCode = 500, level = 'error' } = err;
     const log = `${logger.header(req)} ${statusCode} ${message}`
