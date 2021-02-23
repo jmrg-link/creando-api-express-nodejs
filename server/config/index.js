@@ -2,9 +2,11 @@
  * server/config/index.js
  ******************/
 
+require('dotenv').config('');
+
 const config = {
     server: {
-        port:8080
+        port: process.env.SERVER_PORT
     }
 }
 
