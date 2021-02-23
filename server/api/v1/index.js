@@ -3,12 +3,8 @@
  ******************/
 
 const router = require('express').Router()
+const tasks  = require ('./tasks/routes')
 
-router.route('/tasks')
-    .get((req,res,next) => {
-        res.json({
-            msg:'Todas las Tareas (/api/Tasks)'
-        })
-})
+router.use('/tasks', tasks)
 
 module.exports = router
