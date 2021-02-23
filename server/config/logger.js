@@ -2,8 +2,10 @@
  * server/config/logger.js
  ******************/
 const winston = require('winston')
+
 const { createLogger , format , transports } = require('winston')
-const { combine, errors, json } = format;
+const { combine, timestamp , splat , printf , errors, json } = format;
+
 
 // Setup Logger
 
@@ -14,15 +16,23 @@ const logger = createLogger({
         winston.format.simple()
     ),
     transports: [
-        new transports.Console(),
-        new winston.transports.File({
-            filename: 'warn.log',
-            level: 'warn'
+        new transports.Console({
+            format:format.combine()
         }),
         new winston.transports.File({
-            filename: 'errors.log',
-            level: 'error'
-        })
+            filename: 'logs/warn.log',
+            level: 'warn',
+
+        }),
+        new winston.transports.File({
+            filename: 'logs/error.log',
+            level: 'error',
+        }),
+        new winston.transports.File({
+            filename: 'logs/info.log',
+            level: 'info',
+        }),
+
 
     ]
 })
