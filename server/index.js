@@ -6,6 +6,7 @@
 const express = require('express')
 const requestId = require('express-request-id')();
 const morgan = require('morgan')
+const bodyParser = require('body-parser');
 
 const logger = require('./config/logger')
 
@@ -24,6 +25,11 @@ app.use(morgan
         }
     )
 )
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 // Setup router and routes
 app.use('/api'    , api )
