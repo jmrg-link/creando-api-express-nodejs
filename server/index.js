@@ -7,7 +7,8 @@ const requestId = require('express-request-id')();
 const morgan = require('morgan')
 
 const logger = require('./config/logger')
-const api =  require('./api')
+
+const api =  require('./api/v1')
 
 // Iniciamos app
 const app = express()
@@ -24,7 +25,8 @@ app.use(morgan
 )
 
 // Setup router and routes
-app.use('/api' , api)
+app.use('/api'    , api )
+app.use('/api/v1' , api )
 
 
 
