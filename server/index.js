@@ -63,7 +63,9 @@ app.use((err, req, res, next) => {
 
     logger[level](log)
     res.status( statusCode ).json({
-        message
+        message,
+        error:true,
+        statusCode
     })
 })
 
