@@ -1,6 +1,7 @@
 /************************************
  * server/api/v1/tasks/controller.js
  ************************************/
+const Model = require('./model')
 
 exports.create = async ( req, res, next ) => {
     const { body = {} } = req
