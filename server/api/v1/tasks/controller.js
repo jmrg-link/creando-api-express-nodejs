@@ -2,13 +2,27 @@
  * server/api/v1/tasks/controller.js
  ************************************/
 
-exports.create = (req, res, next) => {
+exports.create = async ( req, res, next ) => {
     const { body = {} } = req
-    res.json(body)
+    const document = new Model(body)
+
+    try {
+      const doc = await document.save()
+      res.status ( 201 ).json( doc )
+    } catch (err) {
+        console.log ( err )
+        next( new Error( err ))
+    }
 }
 
-exports.all = (req, res, next) => {
-    res.json([]);
+exports.all = async ( req, res, next ) => {
+    try {
+        const docs = await Model.find({}).exec()
+        res.json(docs)
+    }catch (err) {
+        console.log ( err )
+        next( new Error( err ))
+    }
 }
 
 exports.read = (req, res, next) => {
