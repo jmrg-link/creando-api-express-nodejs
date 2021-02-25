@@ -58,9 +58,12 @@ app.use((req,res,next) => {
 
 // Error handler - Gestor de Errores
 app.use((err, req, res, next) => {
-    const { message, statusCode = 500, level = 'error' } = err;
-    const log = `${logger.header(req)} ${statusCode} ${message}`
+    let { message, statusCode = 500, level = 'error' } = err;
+    const log = `${logger.header(req)} ${statusCode} ${message}`;
 
+    if (err.message.startsWith('ValidationError')){
+        statusCode = 422
+    }
     logger[level](log)
     res.status( statusCode ).json({
         message,
