@@ -1,8 +1,10 @@
 /************************************
  * server/api/v1/tasks/controller.js
  ************************************/
-const Model = require('./model')
-const { paginationParseParams } = require('../../../util');
+const { Model , fields} = require('./model')
+const { paginationParseParams } = require('../../../util/index');
+const { sortParseParams,
+        sortCompactToStr } = require('../../../util/index');
 
 exports.id = async ( req , res , next , id  ) => {
     try {
@@ -45,9 +47,13 @@ exports.create = async ( req, res, next ) => {
 exports.all = async ( req, res, next ) => {
 
     const { query = {} } = req
-    const { limit, page, skip } = paginationParseParams(query)
+    const { limit, page, skip } = paginationParseParams(query);
+    const { sortBy, direction } = sortParseParams(query, fields);
 
-    const all   =  Model.find({}).skip(skip).limit(limit)
+    const all   =  Model.find({})
+        .sort(sortCompactToStr(sortBy,direction))
+        .skip(skip)
+        .limit(limit)
     const count =  Model.countDocuments();
 
     try {
@@ -63,7 +69,9 @@ exports.all = async ( req, res, next ) => {
                 skip ,
                 total,
                 page,
-                pages
+                pages,
+                sortBy,
+                direction
             }
         })
     }catch (err) {
