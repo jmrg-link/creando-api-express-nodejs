@@ -44,11 +44,11 @@ exports.create = async ( req, res, next ) => {
 
 exports.all = async ( req, res, next ) => {
 
-    const { query = {}, params = {} } = req
+    const { query = {} } = req
     const { limit, page, skip } = paginationParseParams(query)
 
-    const docs = await Model.find({}).skip(skip).limit(limit).exec()
-    const count = Model.countDocuments();
+    const all   =  Model.find({}).skip(skip).limit(limit)
+    const count =  Model.countDocuments();
 
     try {
         const data = await Promise.all([all.exec(),count.exec()])
